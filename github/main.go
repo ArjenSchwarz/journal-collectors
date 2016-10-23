@@ -5,8 +5,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ArjenSchwarz/journal_collectors/config"
-	collectors "github.com/ArjenSchwarz/journal_collectors/shared"
+	"github.com/ArjenSchwarz/journal-collectors/config"
+	collectors "github.com/ArjenSchwarz/journal-collectors/shared"
 	"github.com/google/go-github/github"
 	"golang.org/x/oauth2"
 )
