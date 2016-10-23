@@ -25,6 +25,10 @@ build:
         name: build github
         code: |
           bin/build.sh github
+    - script:
+        name: copy zip files
+        code: |
+          cp -R lambdapackage $ORG_SOURCE/
 
 deploy:
   github:
