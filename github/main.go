@@ -5,28 +5,23 @@ import (
 	"strings"
 	"time"
 
+	"github.com/ArjenSchwarz/journal_collectors/config"
 	collectors "github.com/ArjenSchwarz/journal_collectors/shared"
 	"github.com/google/go-github/github"
 	"golang.org/x/oauth2"
 )
 
-// checkDurationHours is the time you want to look back
-var checkDuration = "24h"
+type configuration struct {
+	CheckDuration    string
+	GitHubUsername   string
+	GitHubToken      string
+	Dateformat       string
+	IFTTTTriggerName string
+	IFTTTKey         string
+	KMS              bool
+}
 
-// username is the name of the user whose contributions you want to check
-var username = "ArjenSchwarz"
-
-// encryptedToken is the KMS encrypted GitHub token
-var encryptedToken = "AQECAHgL87diS+gtOws91E0gf121Z+yeMlGmU2l8DBRhbwyFAAAAAIcwgYQGCSqGSIb3DQEHBqB3MHUCAQAwcAYJKoZIhvcNAQcBMB4GCWCGSAFlAwQBLjARBAybQK6Y6tkyJ7Yz638CARCAQ7nmYToCzd+8ZiFAWHOJH0EXfzBa1ZRrZEBwpPk+3YeIHqAL4n1NZ/JRSZ7L7L8efPS02JRdfH4l55SUNY4zUjoH9iE="
-
-// dateformat is the format for the date output in the header
-var dateformat = "01-02-2006"
-
-// ifttTriggerName is the name of the trigger you set up in your IFTTT
-var iftttTriggerName = "dayone_github_collector"
-
-// encryptedIFTTKey is the KMS encrypted IFTTT maker channel key
-var encryptedIFTTTKey = "AQECAHgL87diS+gtOws91E0gf121Z+yeMlGmU2l8DBRhbwyFAAAAAIowgYcGCSqGSIb3DQEHBqB6MHgCAQAwcwYJKoZIhvcNAQcBMB4GCWCGSAFlAwQBLjARBAw1Z0cZWDFjNpC/73wCARCARoZnSB73hWARMeHzJ7v166MysCYzgRxWsoRZZ5JbmoW00NvoGUXBWyknd59O/E6kPZlcBGyXH+s9qeooUwLluDDiunMxvn8="
+var settings configuration
 
 // entry struct for holding
 type entry struct {
@@ -38,17 +33,25 @@ type commitlist struct {
 }
 
 func main() {
-	checkDuration, err := time.ParseDuration(checkDuration)
+	err := config.ParseConfig(&settings)
+	if err != nil {
+		panic(err)
+	}
+	if settings.KMS {
+		settings.GitHubToken = collectors.DecryptKMS(settings.GitHubToken)
+		settings.IFTTTKey = collectors.DecryptKMS(settings.IFTTTKey)
+	}
+	checkDuration, err := time.ParseDuration(settings.CheckDuration)
 	if err != nil {
 		panic(err)
 	}
 	ts := oauth2.StaticTokenSource(
-		&oauth2.Token{AccessToken: collectors.DecryptKMS(encryptedToken)},
+		&oauth2.Token{AccessToken: settings.GitHubToken},
 	)
 	tc := oauth2.NewClient(oauth2.NoContext, ts)
 	client := github.NewClient(tc)
 
-	events, _, err := client.Activity.ListEventsPerformedByUser(username, false, nil)
+	events, _, err := client.Activity.ListEventsPerformedByUser(settings.GitHubUsername, false, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -70,7 +73,7 @@ func main() {
 	}
 	output := formatOutput(commits)
 	if output != "" {
-		collectors.SendToIFTTT(encryptedIFTTTKey, iftttTriggerName, []string{output})
+		collectors.SendToIFTTT(settings.IFTTTKey, settings.IFTTTTriggerName, []string{output})
 	}
 }
 
@@ -79,7 +82,7 @@ func formatOutput(commits commitlist) string {
 	if len(commits.entries) == 0 {
 		return output
 	}
-	output += fmt.Sprintf("# GitHub commits for %s", time.Now().Format(dateformat))
+	output += fmt.Sprintf("# GitHub commits for %s", time.Now().Format(settings.Dateformat))
 	for reponame, entry := range commits.entries {
 		output += fmt.Sprintf("<br><br>## %s <br>", reponame)
 		for _, event := range entry.commits {
