@@ -41,5 +41,5 @@ deploy:
     - arjen/lambda:
         access_key: $AWS_ACCESS_KEY
         secret_key: $AWS_SECRET_KEY
-        function_name: githubcollector
+        function_name: GitHubCollector
         filepath: $WERCKER_SOURCE_DIR/github.zip
