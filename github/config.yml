@@ -1,7 +1,14 @@
+# checkduration sets how far back the check needs to take place
 checkduration: "24h"
+# githubusername is the name of the github user
 githubusername: "ArjenSchwarz"
+# githubtoken is the (optionally encrypted) GitHub Personal Access Token
 githubtoken: "AQECAHgL87diS+gtOws91E0gf121Z+yeMlGmU2l8DBRhbwyFAAAAAIcwgYQGCSqGSIb3DQEHBqB3MHUCAQAwcAYJKoZIhvcNAQcBMB4GCWCGSAFlAwQBLjARBAybQK6Y6tkyJ7Yz638CARCAQ7nmYToCzd+8ZiFAWHOJH0EXfzBa1ZRrZEBwpPk+3YeIHqAL4n1NZ/JRSZ7L7L8efPS02JRdfH4l55SUNY4zUjoH9iE="
+# The format you want dates to appear in. This follows the Golang date format explained in https://golang.org/pkg/time/#Time.Format
 dateformat: "01-02-2006"
+# iftttttriggername is the name of the trigger your maker channel will listen to
 ifttttriggername: "dayone_github_collector"
+# iftttkey is the (optionally encrypted) key for your maker channel
 iftttkey: "AQECAHgL87diS+gtOws91E0gf121Z+yeMlGmU2l8DBRhbwyFAAAAAIowgYcGCSqGSIb3DQEHBqB6MHgCAQAwcwYJKoZIhvcNAQcBMB4GCWCGSAFlAwQBLjARBAw1Z0cZWDFjNpC/73wCARCARoZnSB73hWARMeHzJ7v166MysCYzgRxWsoRZZ5JbmoW00NvoGUXBWyknd59O/E6kPZlcBGyXH+s9qeooUwLluDDiunMxvn8="
+# kms shows whether or not KMS encryption is used for the githubtoken and iftttkey
 kms: true
