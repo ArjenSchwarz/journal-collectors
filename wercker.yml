@@ -25,21 +25,17 @@ build:
         name: build github
         code: |
           bin/build.sh github
-    - script:
-        name: copy zip files
-        code: |
-          cp lambdapackage/* $ORG_SOURCE/
 
 deploy:
   github:
     - tcnksm/ghr:
-      token: $GITHUB_TOKEN
-      input: $WERCKER_SOURCE_DIR
-      version: latest
-      replace: true
+        token: $GITHUB_TOKEN
+        input: $WERCKER_SOURCE_DIR/lambdapackage
+        version: latest
+        replace: true
   lambda:
     - arjen/lambda:
         access_key: $AWS_ACCESS_KEY
         secret_key: $AWS_SECRET_KEY
         function_name: GitHubCollector
-        filepath: $WERCKER_SOURCE_DIR/github.zip
+        filepath: $WERCKER_SOURCE_DIR/lambdapackage/github.zip
