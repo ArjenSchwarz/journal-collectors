@@ -1,0 +1,45 @@
+box: golang
+build:
+  steps:
+    # Store the original source dir so we can pass the zip file to deploy
+    - script:
+      name: provide chance for deployment
+      code: |
+        export ORG_SOURCE=$WERCKER_SOURCE_DIR
+    # Sets the go workspace and places package
+    # at the right place in the workspace tree.
+    # Interferes with storing dist files.
+    - wercker/setup-go-workspace:
+      package-dir: github.com/ArjenSchwarz/journalcollectors
+    # Get the dependencies
+    - script:
+        name: go get
+        code: |
+          cd $WERCKER_SOURCE_DIR
+          go version
+          go get -t ./...
+    - wercker/golint
+    - install-packages:
+      packages: zip
+    - script:
+        name: build github
+        code: |
+          bin/build.sh github
+    - script:
+        name: copy zip files
+        code: |
+          cp lambdapackage/* $ORG_SOURCE/
+
+deploy:
+  github:
+    - tcnksm/ghr:
+      token: $GITHUB_TOKEN
+      input: $WERCKER_SOURCE_DIR
+      version: latest
+      replace: true
+  lambda:
+    - arjen/lambda:
+        access_key: $AWS_ACCESS_KEY
+        secret_key: $AWS_SECRET_KEY
+        function_name: githubcollector
+        filepath: $WERCKER_SOURCE_DIR/github.zip
