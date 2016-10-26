@@ -1,5 +1,5 @@
 # checkduration sets how far back the check needs to take place
-checkduration: "240h"
+checkduration: "24h"
 feeds:
   - "https://www.instapaper.com/rss/290081/5sgGshfOLwwLXjHzbz3k1f1FquM"
   - "https://www.instapaper.com/archive/rss/290081/8jDjJXOalXHntaj01ezFSB9rA"
