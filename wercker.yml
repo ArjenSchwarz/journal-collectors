@@ -26,6 +26,10 @@ build:
         code: |
           bin/build.sh github
     - script:
+        name: build instapaper
+        code: |
+          bin/build.sh instapaper
+    - script:
         name: copy zip files
         code: |
           cp -R lambdapackage $ORG_SOURCE/
@@ -43,3 +47,8 @@ deploy:
         secret_key: $AWS_SECRET_KEY
         function_name: GitHubCollector
         filepath: $WERCKER_SOURCE_DIR/lambdapackage/github.zip
+    - arjen/lambda:
+        access_key: $AWS_ACCESS_KEY
+        secret_key: $AWS_SECRET_KEY
+        function_name: InstapaperCollector
+        filepath: $WERCKER_SOURCE_DIR/lambdapackage/instapaper.zip
