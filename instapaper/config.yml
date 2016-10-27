@@ -11,4 +11,4 @@ dateformat: "02-01-2006"
 ifttttriggername: "dayone_instapaper_collector"
 # iftttkey is the (optionally encrypted) key for your maker channel
 iftttkey: "AQECAHgL87diS+gtOws91E0gf121Z+yeMlGmU2l8DBRhbwyFAAAAAIowgYcGCSqGSIb3DQEHBqB6MHgCAQAwcwYJKoZIhvcNAQcBMB4GCWCGSAFlAwQBLjARBAw1Z0cZWDFjNpC/73wCARCARoZnSB73hWARMeHzJ7v166MysCYzgRxWsoRZZ5JbmoW00NvoGUXBWyknd59O/E6kPZlcBGyXH+s9qeooUwLluDDiunMxvn8="
-kms: false
+kms: true
