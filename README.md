@@ -24,6 +24,14 @@ The configuration for each collector is in its own `config.yml` file, examples (
 
 The GitHub collector collects your GitHub commits for the period you've set up (for example, the last 24 hours).
 
+## Instapaper
+
+The Instapaper collector collects the articles you (or someone else) saved in the configured feeds.
+
+## Pinboard
+
+The Pinboard collector collects the links you (or someone else) saved in the configured feeds.
+
 # Development
 
 Each collector is designed to run separately as its own Lambda function. The collectors are written in Go and can easily be compiled for use with Lambda using `bin/build.sh` which will create a Lambda ready zip file with the same name containing the (unfortunately) required index.js, the config file, and the binary. For example, the below command will create a zipfile called `github.zip` in the lambdapackage directory.

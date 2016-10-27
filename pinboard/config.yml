@@ -1,15 +1,12 @@
 # checkduration sets how far back the check needs to take place
 checkduration: "24h"
-# The instapaper feeds you want to collect from
+# The pinboard feeds you want to collect
 feeds:
-  - "https://www.instapaper.com/rss/290081/5sgGshfOLwwLXjHzbz3k1f1FquM"
-  - "https://www.instapaper.com/archive/rss/290081/8jDjJXOalXHntaj01ezFSB9rA"
-  - "https://www.instapaper.com/folder/1084441/rss/290081/8jDjJXOalXHntaj01ezFSB9rA"
-  - "https://www.instapaper.com/folder/2190384/rss/290081/8jDjJXOalXHntaj01ezFSB9rA"
+  - "http://feeds.pinboard.in/rss/secret:12c42ec3e7283b9e31e4/u:arjenschwarz/"
 # The format you want dates to appear in. This follows the Golang date format explained in https://golang.org/pkg/time/#Time.Format
 dateformat: "02-01-2006"
 # iftttttriggername is the name of the trigger your maker channel will listen to
-ifttttriggername: "dayone_instapaper_collector"
+ifttttriggername: "dayone_pinboard_collector"
 # iftttkey is the (optionally encrypted) key for your maker channel
 iftttkey: "AQECAHgL87diS+gtOws91E0gf121Z+yeMlGmU2l8DBRhbwyFAAAAAIowgYcGCSqGSIb3DQEHBqB6MHgCAQAwcwYJKoZIhvcNAQcBMB4GCWCGSAFlAwQBLjARBAw1Z0cZWDFjNpC/73wCARCARoZnSB73hWARMeHzJ7v166MysCYzgRxWsoRZZ5JbmoW00NvoGUXBWyknd59O/E6kPZlcBGyXH+s9qeooUwLluDDiunMxvn8="
 kms: true
