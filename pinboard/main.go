@@ -44,7 +44,6 @@ func main() {
 		feeds = append(feeds, parseFeed(feed))
 	}
 	output := formatOutput(feeds)
-	fmt.Println(output)
 	if output != "" {
 		collectors.SendToIFTTT(settings.IFTTTKey, settings.IFTTTTriggerName, []string{output})
 	}
