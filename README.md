@@ -34,11 +34,7 @@ The Pinboard collector collects the links you (or someone else) saved in the con
 
 # Development
 
-Each collector is designed to run separately as its own Lambda function. The collectors are written in Go and can easily be compiled for use with Lambda using `bin/build.sh` which will create a Lambda ready zip file with the same name containing the (unfortunately) required index.js, the config file, and the binary. For example, the below command will create a zipfile called `github.zip` in the lambdapackage directory.
-
-```bash
-$ bin/build.sh github
-```
+Each collector is designed to run separately as its own Lambda function. The collectors are written in Go and can easily be compiled using the provided Makefile. They will all be compiled for Lambda, and can be deployed with the remaining Makefile functionalities.
 
 ## Contribution
 
