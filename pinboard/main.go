@@ -6,6 +6,7 @@ import (
 
 	"github.com/ArjenSchwarz/journal-collectors/config"
 	collectors "github.com/ArjenSchwarz/journal-collectors/shared"
+	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/mmcdole/gofeed"
 )
 
@@ -32,6 +33,10 @@ type parsedItem struct {
 var settings configuration
 
 func main() {
+	lambda.Start(handler)
+}
+
+func handler() error {
 	err := config.ParseConfig(&settings)
 	if err != nil {
 		panic(err)
@@ -47,6 +52,7 @@ func main() {
 	if output != "" {
 		collectors.SendToIFTTT(settings.IFTTTKey, settings.IFTTTTriggerName, []string{output})
 	}
+	return nil
 }
 
 func parseFeed(feedurl string) parsedFeed {

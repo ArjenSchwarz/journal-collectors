@@ -1,0 +1,58 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: A bunch of Lambda functions that collect data that is then sent to IFTTT where it can be handled however you like.
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+     Timeout: 5
+
+Resources:
+  GitHubFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: output/github
+      Handler: github
+      Runtime: go1.x
+      Events:
+        Schedule1:
+          Type: Schedule
+          Properties:
+            Schedule: cron(55 12 * * ? *)
+      Role: !Join
+      - ''
+      - - 'arn:aws:iam::'
+        - !Ref 'AWS::AccountId'
+        - ':role/service-role/KmsDecryption'
+  InstapaperFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: output/instapaper
+      Handler: instapaper
+      Runtime: go1.x
+      Events:
+        Schedule1:
+          Type: Schedule
+          Properties:
+            Schedule: cron(55 12 * * ? *)
+      Role: !Join
+      - ''
+      - - 'arn:aws:iam::'
+        - !Ref 'AWS::AccountId'
+        - ':role/service-role/KmsDecryption'
+  PinboardFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: output/pinboard
+      Handler: pinboard
+      Runtime: go1.x
+      Events:
+        Schedule1:
+          Type: Schedule
+          Properties:
+            Schedule: cron(55 12 * * ? *)
+      Role: !Join
+      - ''
+      - - 'arn:aws:iam::'
+        - !Ref 'AWS::AccountId'
+        - ':role/service-role/KmsDecryption'
