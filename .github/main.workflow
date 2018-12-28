@@ -6,8 +6,5 @@ workflow "Build and Publish" {
 action "Build" {
   uses = "docker://golang:1.11"
   runs = "make"
-  args = "build"
-  env = {
-      GOPATH = "/github/workspace"
-  }
+  args = "github-actions"
 }

@@ -1,12 +1,22 @@
-all: build package deploy
 .PHONY: all
+all: build package deploy
+
+buildpath = $(GOPATH)/src/$(GITHUB_REPOSITORY)
+
+.PHONY: prep-actions
+prep-actions:
+	mkdir -p $(buildpath)
+	ln -s $(GITHUB_WORKSPACE) $(buildpath)
+
+.PHONY: github-actions
+github-actions: prep-actions build
 
 .PHONY: build
 build: deps test clean compile
 
 .PHONY: deps
 deps:
-	go get -u -v ./...
+	go get -v ./...
 
 .PHONY: test
 test:
