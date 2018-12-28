@@ -5,6 +5,6 @@ workflow "Build and Publish" {
 
 action "Lint" {
   uses = "docker://golang:1.11"
-  runs = "go"
+  runs = "GOPATH=`pwd`;go"
   args = "get -t ./..."
 }
