@@ -1,11 +1,11 @@
 .PHONY: all
 all: build package deploy
 
-buildpath = $(GOPATH)/src/$(GITHUB_REPOSITORY)
+buildpath = `pwd`
 
 .PHONY: prep-actions
-prep-actions:
-	mkdir -p $(buildpath)
+prep-actions: check-workspace
+	mkdir -p $(GOPATH)/src/github.com/ArjenSchwarz
 	ln -s $(GITHUB_WORKSPACE) $(buildpath)
 
 .PHONY: github-actions
@@ -16,12 +16,13 @@ build: deps test clean compile
 
 .PHONY: deps
 deps:
-	go get -v ./...
+	cd $(buildpath) && pwd && go get -v ./...
 
 .PHONY: test
 test:
-	golint ./...
-	go test ./...
+	go get -u golang.org/x/lint/golint
+	cd $(buildpath) && golint ./...
+	cd $(buildpath) && go test ./...
 
 .PHONY: clean
 clean:
@@ -47,3 +48,8 @@ package:
 .PHONY: deploy
 deploy:
 	aws cloudformation deploy --template-file ./packaged-template.yaml --stack-name journal-collectors
+
+check-workspace:
+ifdef GITHUB_WORKSPACE
+    buildpath = $(GOPATH)/src/github.com/$(GITHUB_REPOSITORY)
+endif

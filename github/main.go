@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"strings"
 	"time"
@@ -56,7 +57,7 @@ func handler() error {
 	tc := oauth2.NewClient(oauth2.NoContext, ts)
 	client := github.NewClient(tc)
 
-	events, _, err := client.Activity.ListEventsPerformedByUser(settings.GitHubUsername, false, nil)
+	events, _, err := client.Activity.ListEventsPerformedByUser(context.Background(), settings.GitHubUsername, false, nil)
 	if err != nil {
 		panic(err)
 	}
