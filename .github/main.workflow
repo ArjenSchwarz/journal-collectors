@@ -16,7 +16,8 @@ action "Lint" {
   needs = "GoGet"
   uses = "docker://golang:1.11"
   runs = "golint"
-  args = "
+  args = "get -u ./..."
+  env = {
       GOPATH = "/github/workspace"
   }
 }
