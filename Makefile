@@ -6,7 +6,7 @@ build: deps test clean compile
 
 .PHONY: deps
 deps:
-	go get -v ./...
+	go get -u -v ./...
 
 .PHONY: test
 test:
