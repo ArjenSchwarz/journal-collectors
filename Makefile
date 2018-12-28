@@ -30,7 +30,7 @@ clean:
 
 .PHONY: compile
 compile:
-	mkdir -p output/{github,instapaper,pinboard}
+	mkdir -p output/github output/instapaper output/pinboard
 	cp github/config.yml output/github/
 	cp instapaper/config.yml output/instapaper/
 	cp pinboard/config.yml output/pinboard/
