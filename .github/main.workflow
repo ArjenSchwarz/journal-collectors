@@ -1,6 +1,6 @@
 workflow "Build and Publish" {
   on = "push"
-  resolves = ["GitHub Action for AWS"]
+  resolves = ["Package"]
 }
 
 action "Build" {
@@ -9,13 +9,13 @@ action "Build" {
   args = "github-actions"
 }
 
-action "GitHub Action for AWS" {
-  uses = "actions/aws/cli@8d31870"
+action "Package" {
+  uses = "ArjenSchwarz/aws/cli@master"
   needs = ["Build"]
-  runs = "make"
   args = "aws"
   secrets = ["AWS_SECRET_ACCESS_KEY", "AWS_ACCESS_KEY_ID"]
   env = {
-      AWS_DEFAULT_REGION = "us-east-1"
+      AWS_DEFAULT_REGION = "us-east-1",
+      ONLY_IN_BRANCH = "master"
   }
 }
