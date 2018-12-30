@@ -12,7 +12,7 @@ action "Build" {
 action "Package" {
   uses = "ArjenSchwarz/aws/cli@master"
   needs = ["Build"]
-  args = "aws"
+  args = "cloudformation deploy --template-file ./packaged-template.yaml --stack-name journal-collectors"
   secrets = ["AWS_SECRET_ACCESS_KEY", "AWS_ACCESS_KEY_ID"]
   env = {
       AWS_DEFAULT_REGION = "us-east-1",
