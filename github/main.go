@@ -1,12 +1,14 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"strings"
 	"time"
 
 	"github.com/ArjenSchwarz/journal-collectors/config"
 	collectors "github.com/ArjenSchwarz/journal-collectors/shared"
+	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/google/go-github/github"
 	"golang.org/x/oauth2"
 )
@@ -33,6 +35,10 @@ type commitlist struct {
 }
 
 func main() {
+	lambda.Start(handler)
+}
+
+func handler() error {
 	err := config.ParseConfig(&settings)
 	if err != nil {
 		panic(err)
@@ -51,7 +57,7 @@ func main() {
 	tc := oauth2.NewClient(oauth2.NoContext, ts)
 	client := github.NewClient(tc)
 
-	events, _, err := client.Activity.ListEventsPerformedByUser(settings.GitHubUsername, false, nil)
+	events, _, err := client.Activity.ListEventsPerformedByUser(context.Background(), settings.GitHubUsername, false, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -75,6 +81,7 @@ func main() {
 	if output != "" {
 		collectors.SendToIFTTT(settings.IFTTTKey, settings.IFTTTTriggerName, []string{output})
 	}
+	return nil
 }
 
 func formatOutput(commits commitlist) string {
