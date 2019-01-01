@@ -9,9 +9,16 @@ action "Build" {
   args = "github-actions"
 }
 
+# Filter for master branch
+action "Master" {
+  needs = "Build"
+  uses = "actions/bin/filter@master"
+  args = "branch master"
+}
+
 action "Package" {
   uses = "ArjenSchwarz/aws/cli@master"
-  needs = ["Build"]
+  needs = ["Master"]
   args = "cloudformation package --template-file ./template.yaml --s3-bucket public.ig.nore.me --output-template-file packaged-template.yaml"
   secrets = ["AWS_SECRET_ACCESS_KEY", "AWS_ACCESS_KEY_ID"]
   env = {
