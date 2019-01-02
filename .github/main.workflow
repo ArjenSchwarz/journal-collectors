@@ -2,7 +2,6 @@ workflow "Build and Publish" {
   on = "push"
   resolves = [
     "Deploy",
-    "apex/actions/go@master-1",
   ]
 }
 
