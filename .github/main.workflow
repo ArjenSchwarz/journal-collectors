@@ -2,7 +2,7 @@ workflow "Build and Publish" {
   on = "push"
   resolves = [
     "Deploy",
-    "apex/actions/go@master",
+    "apex/actions/go@master-1",
   ]
 }
 
@@ -43,4 +43,11 @@ action "Deploy" {
 action "apex/actions/go@master" {
   uses = "apex/actions/go@master"
   args = "get -v ./..."
+}
+
+action "apex/actions/go@master-1" {
+  uses = "apex/actions/go@master"
+  needs = ["apex/actions/go@master"]
+  runs = "make"
+  args = "test"
 }
