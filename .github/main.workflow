@@ -1,6 +1,9 @@
 workflow "Build and Publish" {
   on = "push"
-  resolves = ["Deploy"]
+  resolves = [
+    "Deploy",
+    "apex/actions/go@master",
+  ]
 }
 
 action "Build" {
@@ -22,7 +25,7 @@ action "Package" {
   args = "cloudformation package --template-file ./template.yaml --s3-bucket public.ig.nore.me --output-template-file packaged-template.yaml"
   secrets = ["AWS_SECRET_ACCESS_KEY", "AWS_ACCESS_KEY_ID"]
   env = {
-      ONLY_IN_BRANCH = "master"
+    ONLY_IN_BRANCH = "master"
   }
 }
 
@@ -32,7 +35,12 @@ action "Deploy" {
   args = "cloudformation deploy --template-file ./packaged-template.yaml --stack-name journal-collectors"
   secrets = ["AWS_SECRET_ACCESS_KEY", "AWS_ACCESS_KEY_ID"]
   env = {
-      AWS_DEFAULT_REGION = "us-east-1",
-      ONLY_IN_BRANCH = "master"
+    AWS_DEFAULT_REGION = "us-east-1"
+    ONLY_IN_BRANCH = "master"
   }
+}
+
+action "apex/actions/go@master" {
+  uses = "apex/actions/go@master"
+  args = "get -v ./..."
 }
