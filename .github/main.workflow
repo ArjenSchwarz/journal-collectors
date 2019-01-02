@@ -1,8 +1,6 @@
 workflow "Build and Publish" {
   on = "push"
-  resolves = [
-    "Deploy",
-  ]
+  resolves = [ "Deploy" ]
 }
 
 action "Build" {
@@ -13,7 +11,7 @@ action "Build" {
 
 action "Package" {
   uses = "ArjenSchwarz/aws/cli@master"
-  needs = ["Master"]
+  needs = ["Build"]
   args = "cloudformation package --template-file ./template.yaml --s3-bucket public.ig.nore.me --output-template-file packaged-template.yaml"
   secrets = ["AWS_SECRET_ACCESS_KEY", "AWS_ACCESS_KEY_ID"]
   env = {
