@@ -1,13 +1,6 @@
 .PHONY: all
 all: build package deploy
 
-buildpath = `pwd`
-
-.PHONY: prep-actions
-prep-actions: check-workspace
-	mkdir -p $(GOPATH)/src/github.com/ArjenSchwarz
-	ln -s $(GITHUB_WORKSPACE) $(buildpath)
-
 .PHONY: github-actions
 github-actions: prep-actions build
 
@@ -16,7 +9,7 @@ build: deps test clean compile
 
 .PHONY: deps
 deps:
-	cd $(buildpath) && pwd && go get -v ./...
+	go get -v ./...
 
 .PHONY: test
 test:
@@ -48,8 +41,3 @@ package:
 .PHONY: deploy
 deploy:
 	aws cloudformation deploy --template-file ./packaged-template.yaml --stack-name journal-collectors
-
-check-workspace:
-ifdef GITHUB_WORKSPACE
-    buildpath = $(GOPATH)/src/github.com/$(GITHUB_REPOSITORY)
-endif

@@ -7,16 +7,9 @@ workflow "Build and Publish" {
 }
 
 action "Build" {
-  uses = "docker://golang:1.11"
+  uses = "apex/actions/go@master"
   runs = "make"
-  args = "github-actions"
-}
-
-# Filter for master branch
-action "Master" {
-  needs = "Build"
-  uses = "actions/bin/filter@master"
-  args = "branch master"
+  args = "build"
 }
 
 action "Package" {
@@ -38,16 +31,4 @@ action "Deploy" {
     AWS_DEFAULT_REGION = "us-east-1"
     ONLY_IN_BRANCH = "master"
   }
-}
-
-action "apex/actions/go@master" {
-  uses = "apex/actions/go@master"
-  args = "get -v ./..."
-}
-
-action "apex/actions/go@master-1" {
-  uses = "apex/actions/go@master"
-  needs = ["apex/actions/go@master"]
-  runs = "make"
-  args = "test"
 }
